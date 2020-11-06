@@ -25,16 +25,19 @@ class RSA():
 
         # generate p,q
         N = -1
-        while N < 10**digits and N > 10**(digits+1):
+        while N < 10**digits or N > 10**(digits+1):
             p = number_theory_functions.generate_prime(digits//2 + 1)
             q = number_theory_functions.generate_prime(digits//2)
-            N = (p-1)(q-1)
+            if p is None or q is None:
+                continue
+            N = (p-1)*(q-1)
 
+        print(N)
         gcd = -1
         e = 1
         while gcd != 1:
-            x = randrange(0, 1)
-            e = (N*x)//1
+            e = randrange(1, N)
+            print(e)
             gcd, a, b = number_theory_functions.extended_gcd(e, N)
 
         d = number_theory_functions.modular_inverse(e, N)
@@ -52,7 +55,15 @@ class RSA():
         -------
         c : The encrypted ciphertext
         """
-        return number_theory_functions.modular_exponent(m, self.private_key[1], self.private_key[0])
+        if m is None:
+            return None
+        # if m > self.private_key[0]:
+        #     return None
+        gcd, a, b = number_theory_functions.extended_gcd(self.private_key[0], m)
+        if gcd != 1:
+            return None
+
+        return number_theory_functions.modular_exponent(m, self.public_key[1], self.private_key[0])
 
     def decrypt(self, c):
         """
@@ -66,4 +77,8 @@ class RSA():
         -------
         m : The decrypted plaintext
        """
+        if c is None:
+            return None
+        # if c > self.private_key[0]:
+        #     return None
         return number_theory_functions.modular_exponent(c, self.private_key[1], self.private_key[0])
