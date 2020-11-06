@@ -52,15 +52,7 @@ class RSA():
         -------
         c : The encrypted ciphertext
         """
-        arr = []
-        for i in map(int, str(m)):
-            x = number_theory_functions.modular_exponent(i, self.private_key[1], self.private_key[0])
-            arr.append(x)
-        x = "".join(arr)
-        return int(x)
-        """
         return number_theory_functions.modular_exponent(m, self.private_key[1], self.private_key[0])
-        """
 
     def decrypt(self, c):
         """
@@ -74,12 +66,4 @@ class RSA():
         -------
         m : The decrypted plaintext
        """
-        arr=[]
-        for i in map(int, str(c)):
-            x=number_theory_functions.modular_exponent(i, self.private_key[1], self.private_key[0])
-            arr.append(x)
-        x="".join(arr)
-        return int(x)
-        """
         return number_theory_functions.modular_exponent(c, self.private_key[1], self.private_key[0])
-        """
