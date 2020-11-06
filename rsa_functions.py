@@ -30,17 +30,17 @@ class RSA():
             q = number_theory_functions.generate_prime(digits//2)
             if p is None or q is None:
                 continue
-            N = (p-1)*(q-1)
+            N = p*q
 
-        print(N)
+        phi = (p-1)*(q-1)
         gcd = -1
         e = 1
         while gcd != 1:
-            e = randrange(1, N)
-            print(e)
-            gcd, a, b = number_theory_functions.extended_gcd(e, N)
+            e = randrange(1, phi)
+            gcd, a, b = number_theory_functions.extended_gcd(e, phi)
 
-        d = number_theory_functions.modular_inverse(e, N)
+        d = number_theory_functions.modular_inverse(e, phi)
+
         return RSA((N, e), (N, d))
 
     def encrypt(self, m):
@@ -57,8 +57,6 @@ class RSA():
         """
         if m is None:
             return None
-        # if m > self.private_key[0]:
-        #     return None
         gcd, a, b = number_theory_functions.extended_gcd(self.private_key[0], m)
         if gcd != 1:
             return None
@@ -79,6 +77,4 @@ class RSA():
        """
         if c is None:
             return None
-        # if c > self.private_key[0]:
-        #     return None
         return number_theory_functions.modular_exponent(c, self.private_key[1], self.private_key[0])

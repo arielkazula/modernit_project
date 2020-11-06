@@ -31,22 +31,21 @@ class TestRSA(unittest.TestCase):
         plaintexts = [123456789, 17, 9999, 102930]
         for M in plaintexts:
             C = rsa.encrypt(M)
-            print("*********************")
-            print(C)
             MM = rsa.decrypt(C)
             self.assertEqual(M, MM)
 
 
-# print(number_theory_functions.modular_exponent(3, 103, 534))
+def q1(digits=10):
+    p = 7919
+    q = 6841
+    N = p*q
+    phi = (p-1)*(q-1)
+    e = 2584933
+    d = number_theory_functions.modular_inverse(e, phi)
+    rsa = RSA((N, e), (N, d))
+    message = 117
+    print(rsa.encrypt(message))
 
-# rsa = RSA.generate(10)
-# print("rsa")
-# plaintexts = [123456789, 17, 9999, 102930]
-# for M in plaintexts:
-#     C = rsa.encrypt(M)
-#     MM = rsa.decrypt(C)
-#     print(M)
-#     print(MM)
 
 if __name__ == '__main__':
     unittest.main()
