@@ -1,6 +1,7 @@
 from random import randrange
 
-def extended_gcd(a,b):
+
+def extended_gcd(a, b):
     """
     Returns the extended gcd of a and b
 
@@ -12,10 +13,13 @@ def extended_gcd(a,b):
     -------
     (d, x, y): d = gcd(a,b) = a*x + b*y
     """
+    if a == 0:
+        return (b, 0, 1)
+    gcd, x, y = extended_gcd(b % a, a)
+    return (gcd, y - (b//a) * x, x)
 
 
-
-def modular_inverse(a,n):
+def modular_inverse(a, n):
     """
     Returns the inverse of a modulo n if one exists
 
@@ -44,6 +48,9 @@ def modular_exponent(a, d, n):
     -------
     b: such that b == (a**d) % n
     """
+    
+    return (a**d) % n
+
 
 def miller_rabin(n):
     """
@@ -58,7 +65,7 @@ def miller_rabin(n):
     b: If n is prime, b is guaranteed to be True.
     If n is not a prime, b has a 3/4 chance at least to be False
     """
-    a = randrange(1,n)
+    a = randrange(1, n)
     k = 0
     d = n-1
     while d % 2 == 0:
@@ -74,6 +81,7 @@ def miller_rabin(n):
         if x == n-1:
             return True
     return False
+
 
 def is_prime(n):
     """
@@ -92,6 +100,7 @@ def is_prime(n):
         if not miller_rabin(n):
             return False
     return True
+
 
 def generate_prime(digits):
     for i in range(digits * 10):
